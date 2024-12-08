@@ -10,7 +10,7 @@ exclude = ["dist", "build", "assets", "credits"]
 members = ["mobile"]
 
 [profile.dev.package."*"]
-opt-level = 3
+opt-level = 1
 
 [profile.dev]
 opt-level = 1
@@ -81,6 +81,16 @@ winit = { version = "0.30", default-features = false }
 image = { version = "0.25", default-features = false }
 ## This greatly improves WGPU's performance due to its heavy use of trace! calls
 log = { version = "0.4", features = ["max_level_debug", "release_max_level_warn"] }
+bevy_time = "0.15.0"
+# bevy_rapier2d = "0.27.0"
+glam = "0.29.2"
+itertools = "0.13.0"
+bumpalo = { version = "3.16.0", features = ["std"] }
+bevy_color = "0.15.1"
+avian2d = { git = "https://github.com/Jondolf/avian", version = "*" }
+bevy_simple_text_input = "0.10.0"
+bevy_egui = "0.31.1"
+# avian2d = {git="https://github.com/Jondolf/avian"}
 
 [build-dependencies]
 embed-resource = "1"

@@ -1,17 +1,22 @@
 #![allow(clippy::type_complexity)]
-
 mod actions;
 mod audio;
+mod constants;
 mod loading;
 mod menu;
+mod movement;
+mod plattforms;
 mod player;
-
+mod ui;
+mod utils;
+use bevy_egui::{egui, EguiContexts, EguiPlugin, EguiSettings};
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
+use crate::movement::*;
 use crate::player::PlayerPlugin;
-
+use avian2d::{math::*, prelude::*};
 use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
@@ -35,13 +40,19 @@ pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
-        app.init_state::<GameState>().add_plugins((
-            LoadingPlugin,
-            MenuPlugin,
-            ActionsPlugin,
-            InternalAudioPlugin,
-            PlayerPlugin,
-        ));
+        app.init_state::<GameState>()
+            .add_plugins((
+                LoadingPlugin,
+                MenuPlugin,
+                ActionsPlugin,
+                InternalAudioPlugin,
+                PhysicsPlugins::default().with_length_unit(20.0),
+                PlayerPlugin,
+            crate::ui::UIPlugin,
+            CharacterControllerPlugin,
+                crate::plattforms::PlatformsPlugin,
+            ))
+            .insert_resource(Gravity(Vector::NEG_Y * 1000.0));
 
         #[cfg(debug_assertions)]
         {

@@ -1,8 +1,11 @@
 use crate::actions::Actions;
 use crate::loading::TextureAssets;
+use crate::movement::*;
+use crate::plattforms::{self, Plattform};
+use crate::utils::vec2;
 use crate::GameState;
+use avian2d::{math::*, prelude::*};
 use bevy::prelude::*;
-
 pub struct PlayerPlugin;
 
 #[derive(Component)]
@@ -12,17 +15,32 @@ pub struct Player;
 /// Player logic is only active during the State `GameState::Playing`
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::Playing), spawn_player)
-            .add_systems(Update, move_player.run_if(in_state(GameState::Playing)));
+        app.add_systems(OnEnter(GameState::Playing), spawn_player);
+        // .add_systems(Update, move_player.run_if(in_state(GameState::Playing)));
     }
 }
 
-fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
+fn spawn_player(
+    mut commands: Commands,
+    textures: Res<TextureAssets>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) {
     commands.spawn((
-        Sprite::from_image(textures.bevy.clone()),
-        Transform::from_translation(Vec3::new(0., 0., 1.)),
-        Player,
+        Mesh2d(meshes.add(Capsule2d::new(12.5, 20.0))),
+        MeshMaterial2d(materials.add(Color::srgb(0.2, 0.7, 0.9))),
+        Transform::from_xyz(0.0, -100.0, 0.0),
+        CharacterControllerBundle::new(Collider::capsule(12.5, 20.0), Vector::NEG_Y * 1500.0)
+            .with_movement(1250.0, 0.92, 400.0, (30.0 as Scalar).to_radians()),
     ));
+    // commands.spawn((
+    //     Sprite::from_color(Color::linear_rgb(130.0, 50.0, 50.0), vec2(50., 50.)),
+    //     Transform::from_translation(Vec3::new(0., 0., 1.)),
+    //     RigidBody::Dynamic,
+    //     Collider::rectangle(30.0, 30.0),
+    //     Player,
+    // ));
+    //
 }
 
 fn move_player(

@@ -1,0 +1,23 @@
+use bevy::color::Color;
+use std::time::Duration;
+const SPRITE_IDX_JUMP: usize = 2;
+const SPRITE_RENDER_WIDTH: f32 = 64.0;
+const SPRITE_RENDER_HEIGHT: f32 = 128.0;
+const SPRITESHEET_COLS: usize = 7;
+const SPRITESHEET_ROWS: usize = 8;
+const SPRITE_TILE_WIDTH: f32 = 128.0;
+const SPRITE_TILE_HEIGHT: f32 = 256.0;
+const SPRITE_IDX_STAND: usize = 16;
+const SPRITE_IDX_WALKING: &[usize] = &[29, 22];
+const CYCLE_DELAY: Duration = Duration::from_millis(70);
+const COLOR_BACKGROUND: Color = Color::rgb(0.29, 0.31, 0.41);
+const COLOR_FLOOR: Color = Color::rgb(0.45, 0.55, 0.66);
+const FLOOR_THICKNESS: f32 = 10.0;
+
+const WINDOW_HEIGHT: f32 = 720.0;
+pub const WINDOW_LEFT_X: f32 = WINDOW_WIDTH / 2.0;
+pub const WINDOW_BOTTOM_Y: f32 = WINDOW_HEIGHT / 2.0;
+const WINDOW_WIDTH: f32 = 1024.0;
+const MAX_JUMP_HEIGHT: f32 = 230.0;
+const PLAYER_VELOCITY_X: f32 = 400.0;
+const PLAYER_VELOCITY_Y: f32 = 850.0;
