@@ -7,4 +7,7 @@ fn main() {
         // on windows we will set our game icon as icon for the executable
         embed_resource::compile("build/windows/icon.rc");
     }
+
+    // println!("cargo:rustc-link-search=native=./bind");
+    // println!("cargo:rustc-link-lib=dylib=odin_lib")
 }

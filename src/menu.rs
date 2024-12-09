@@ -1,16 +1,22 @@
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
-
+use bevy_simple_text_input::{
+    TextInput, TextInputPlugin, TextInputSubmitEvent, TextInputSystem, TextInputTextColor,
+    TextInputTextFont,
+};
 pub struct MenuPlugin;
-
+const BORDER_COLOR_ACTIVE: Color = Color::srgb(0.75, 0.52, 0.99);
+const TEXT_COLOR: Color = Color::srgb(0.9, 0.9, 0.9);
+const BACKGROUND_COLOR: Color = Color::srgb(0.15, 0.15, 0.15);
 /// This plugin is responsible for the game menu (containing only one button...)
 /// The menu is only drawn during the State `GameState::Menu` and is removed when that state is exited
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Menu), setup_menu)
             .add_systems(Update, click_play_button.run_if(in_state(GameState::Menu)))
-            .add_systems(OnExit(GameState::Menu), cleanup_menu);
+            .add_systems(OnExit(GameState::Menu), cleanup_menu)
+            .add_systems(Update, listener.after(TextInputSystem));
     }
 }
 
@@ -71,6 +77,24 @@ fn setup_menu(mut commands: Commands, textures: Res<TextureAssets>) {
                     },
                     TextColor(Color::linear_rgb(0.9, 0.9, 0.9)),
                 ));
+        })
+        .with_children(|parent| {
+            parent.spawn((
+                Node {
+                    width: Val::Px(200.0),
+                    border: UiRect::all(Val::Px(5.0)),
+                    padding: UiRect::all(Val::Px(5.0)),
+                    ..default()
+                },
+                BorderColor(BORDER_COLOR_ACTIVE),
+                BackgroundColor(BACKGROUND_COLOR),
+                TextInput,
+                TextInputTextFont(TextFont {
+                    font_size: 34.,
+                    ..default()
+                }),
+                TextInputTextColor(TextColor(TEXT_COLOR)),
+            ));
         });
     commands
         .spawn((
@@ -205,5 +229,10 @@ fn click_play_button(
 fn cleanup_menu(mut commands: Commands, menu: Query<Entity, With<Menu>>) {
     for entity in menu.iter() {
         commands.entity(entity).despawn_recursive();
+    }
+}
+fn listener(mut events: EventReader<TextInputSubmitEvent>) {
+    for event in events.read() {
+        info!("{:?} submitted: {}", event.entity, event.value);
     }
 }

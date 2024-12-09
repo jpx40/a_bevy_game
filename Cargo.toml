@@ -72,7 +72,7 @@ bevy = { version = "0.15", default-features = false, features = [
     "x11",
 ] }
 bevy_kira_audio = { version = "0.21" }
-bevy_asset_loader = { version = "0.22" }
+bevy_asset_loader = "0.22"
 rand = { version = "0.8.3" }
 webbrowser = { version = "1", features = ["hardened"] }
 
@@ -90,6 +90,11 @@ bevy_color = "0.15.1"
 avian2d = { git = "https://github.com/Jondolf/avian", version = "*" }
 bevy_simple_text_input = "0.10.0"
 bevy_egui = "0.31.1"
+bevy_ui = "0.15.0"
+generational-arena = "=0.2.9"
+libloading = "0.8.6"
+lazy_static = "1.5.0"
+bevy_prototype_lyon = { git = "https://github.com/jpx40/bevy_prototype_lyon", version = "0.13.0" }
 # avian2d = {git="https://github.com/Jondolf/avian"}
 
 [build-dependencies]

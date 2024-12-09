@@ -15,8 +15,8 @@ pub struct Player;
 /// Player logic is only active during the State `GameState::Playing`
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::Playing), spawn_player);
-        // .add_systems(Update, move_player.run_if(in_state(GameState::Playing)));
+        app.add_systems(OnEnter(GameState::Playing), spawn_player)
+            .add_systems(Update, camera_follow.run_if(in_state(GameState::Playing)));
     }
 }
 
@@ -32,6 +32,7 @@ fn spawn_player(
         Transform::from_xyz(0.0, -100.0, 0.0),
         CharacterControllerBundle::new(Collider::capsule(12.5, 20.0), Vector::NEG_Y * 1500.0)
             .with_movement(1250.0, 0.92, 400.0, (30.0 as Scalar).to_radians()),
+        Player,
     ));
     // commands.spawn((
     //     Sprite::from_color(Color::linear_rgb(130.0, 50.0, 50.0), vec2(50., 50.)),
@@ -59,5 +60,17 @@ fn move_player(
     );
     for mut player_transform in &mut player_query {
         player_transform.translation += movement;
+    }
+}
+fn camera_follow(
+    player_transform: Query<&Transform, With<Player>>,
+    mut camera: Query<&mut Transform, (With<Camera2d>, Without<Player>)>,
+) {
+    if player_transform.is_empty() {
+        return;
+    }
+    if !camera.is_empty() {
+        let mut t = camera.single_mut();
+        t.translation.x = player_transform.single().translation.x;
     }
 }

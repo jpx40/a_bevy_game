@@ -8,6 +8,7 @@ pub struct CharacterControllerPlugin;
 impl Plugin for CharacterControllerPlugin {
     fn build(&self, app: &mut App) {
         app.add_event::<MovementAction>()
+            .add_event::<UiAction>()
             .add_systems(
                 Update,
                 (
@@ -18,7 +19,7 @@ impl Plugin for CharacterControllerPlugin {
                     apply_gravity,
                     movement,
                     apply_movement_damping,
-                                    )
+                )
                     .chain(),
             )
             .add_systems(
@@ -155,13 +156,12 @@ fn keyboard_input(
     let direction = horizontal as Scalar;
 
     if direction != 0.0 {
-        
         ui_event.send(UiAction::Nothing);
         movement_event_writer.send(MovementAction::Move(direction));
     }
     if keyboard_input.just_pressed(KeyCode::Space) && keyboard_input.pressed(KeyCode::ShiftLeft) {
         movement_event_writer.send(MovementAction::HighJump);
-           ui_event.send(UiAction::Increase);
+        ui_event.send(UiAction::Increase);
     } else if keyboard_input.just_pressed(KeyCode::Space) {
         ui_event.send(UiAction::Increase);
         movement_event_writer.send(MovementAction::Jump);
@@ -192,8 +192,6 @@ fn update_grounded(
         With<CharacterController>,
     >,
 ) {
-    
-    
     for (entity, hits, rotation, max_slope_angle) in &mut query {
         // The character is grounded if the shape caster has a hit with a normal
         // that isn't too steep.
@@ -234,7 +232,7 @@ fn movement(
         {
             match event {
                 MovementAction::Move(direction) => {
-                    linear_velocity.x += *direction * movement_acceleration.0 * delta_time;
+                    linear_velocity.x += (*direction * movement_acceleration.0 * delta_time) * 2.;
                 }
                 MovementAction::Jump => {
                     if is_grounded {
@@ -284,6 +282,7 @@ fn apply_movement_damping(mut query: Query<(&MovementDampingFactor, &mut LinearV
 fn kinematic_controller_collisions(
     collisions: Res<Collisions>,
     bodies: Query<&RigidBody>,
+
     collider_parents: Query<&ColliderParent, Without<Sensor>>,
     mut character_controllers: Query<
         (

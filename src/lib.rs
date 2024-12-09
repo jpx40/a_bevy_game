@@ -1,6 +1,7 @@
 #![allow(clippy::type_complexity)]
 mod actions;
 mod audio;
+mod binds;
 mod constants;
 mod loading;
 mod menu;
@@ -9,7 +10,6 @@ mod plattforms;
 mod player;
 mod ui;
 mod utils;
-use bevy_egui::{egui, EguiContexts, EguiPlugin, EguiSettings};
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
 use crate::loading::LoadingPlugin;
@@ -18,9 +18,15 @@ use crate::movement::*;
 use crate::player::PlayerPlugin;
 use avian2d::{math::*, prelude::*};
 use bevy::app::App;
+mod collectables;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+use bevy_egui::{egui, EguiContexts, EguiPlugin, EguiSettings};
+use bevy_simple_text_input::{
+    TextInput, TextInputPlugin, TextInputSubmitEvent, TextInputSystem, TextInputTextColor,
+    TextInputTextFont,
+};
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -45,11 +51,13 @@ impl Plugin for GamePlugin {
                 LoadingPlugin,
                 MenuPlugin,
                 ActionsPlugin,
+                TextInputPlugin,
                 InternalAudioPlugin,
                 PhysicsPlugins::default().with_length_unit(20.0),
                 PlayerPlugin,
-            crate::ui::UIPlugin,
-            CharacterControllerPlugin,
+                crate::ui::UIPlugin,
+                CharacterControllerPlugin,
+                crate::collectables::CollectablePlugin,
                 crate::plattforms::PlatformsPlugin,
             ))
             .insert_resource(Gravity(Vector::NEG_Y * 1000.0));
