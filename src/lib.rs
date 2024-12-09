@@ -8,6 +8,7 @@ mod menu;
 mod movement;
 mod plattforms;
 mod player;
+mod state;
 mod ui;
 mod utils;
 use crate::actions::ActionsPlugin;
@@ -55,6 +56,7 @@ impl Plugin for GamePlugin {
                 InternalAudioPlugin,
                 PhysicsPlugins::default().with_length_unit(20.0),
                 PlayerPlugin,
+                crate::state::StorePlugin,
                 crate::ui::UIPlugin,
                 CharacterControllerPlugin,
                 crate::collectables::CollectablePlugin,

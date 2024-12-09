@@ -1,7 +1,7 @@
 use avian2d::{math::*, prelude::*};
 use bevy::{ecs::query::Has, prelude::*};
 
-use crate::ui::{update_counter, update_text, UiAction};
+use crate::ui::UiAction;
 
 pub struct CharacterControllerPlugin;
 
@@ -14,7 +14,6 @@ impl Plugin for CharacterControllerPlugin {
                 (
                     keyboard_input,
                     gamepad_input,
-                    update_counter,
                     update_grounded,
                     apply_gravity,
                     movement,
