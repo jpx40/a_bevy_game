@@ -1,3 +1,4 @@
+use crate::sprite_loader::FruitFile;
 use crate::utils::vec3;
 use crate::GameState;
 use crate::{player::Player, state::Store};
@@ -34,7 +35,7 @@ fn setup(
         (-220., 140., 0.),
         (290., 940., 0.),
     ];
-
+    let fruit_file = FruitFile::load("./sprites/fruits.ron").expect("Failed to load Sprite File");
     for (x, y, z) in arr {
         commands.spawn((
             Mesh2d(meshes.add(Circle::new(15.))),
@@ -42,6 +43,20 @@ fn setup(
             Collectable,
             Sensor,
             Transform::from_xyz(x, y, z),
+            Visibility::Visible,
+            RigidBody::Kinematic,
+            Collider::circle(25.0),
+            State::Moving,
+            CollidingEntities::default(),
+        ));
+    }
+    for f in fruit_file.0 {
+        commands.spawn((
+            Mesh2d(meshes.add(Circle::new(15.))),
+            MeshMaterial2d(materials.add(Color::linear_rgb(1., 0., 0.))),
+            Collectable,
+            Sensor,
+            Transform::from_xyz(f.pos.x, f.pos.y, f.pos.z),
             Visibility::Visible,
             RigidBody::Kinematic,
             Collider::circle(25.0),

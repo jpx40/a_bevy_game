@@ -402,7 +402,7 @@ checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
 [[package]]
 name = "avian2d"
 version = "0.1.2"
-source = "git+https://github.com/Jondolf/avian#ba8821976d3dcb23c76778c4b8ba3e0687c0db21"
+source = "git+https://github.com/Jondolf/avian#e23d070eb91022741a3a09c14f74cb0d8e2fb32b"
 dependencies = [
  "avian_derive",
  "bevy 0.15.0",
@@ -410,7 +410,7 @@ dependencies = [
  "bevy_math 0.15.0",
  "bevy_transform_interpolation",
  "bitflags 2.6.0",
- "derive_more",
+ "derive_more 1.0.0",
  "fxhash",
  "indexmap",
  "itertools",
@@ -422,7 +422,7 @@ dependencies = [
 [[package]]
 name = "avian_derive"
 version = "0.1.0"
-source = "git+https://github.com/Jondolf/avian#ba8821976d3dcb23c76778c4b8ba3e0687c0db21"
+source = "git+https://github.com/Jondolf/avian#e23d070eb91022741a3a09c14f74cb0d8e2fb32b"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -507,7 +507,7 @@ dependencies = [
  "bevy_transform 0.15.0",
  "bevy_utils 0.15.0",
  "blake3",
- "derive_more",
+ "derive_more 1.0.0",
  "downcast-rs",
  "either",
  "petgraph",
@@ -549,7 +549,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "console_error_panic_hook",
  "ctrlc",
- "derive_more",
+ "derive_more 1.0.0",
  "downcast-rs",
  "wasm-bindgen",
  "web-sys",
@@ -607,7 +607,7 @@ dependencies = [
  "bitflags 2.6.0",
  "blake3",
  "crossbeam-channel",
- "derive_more",
+ "derive_more 1.0.0",
  "disqualified",
  "downcast-rs",
  "either",
@@ -695,7 +695,7 @@ dependencies = [
  "bevy_math 0.15.0",
  "bevy_reflect 0.15.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "encase 0.10.0",
  "serde",
  "wgpu-types 23.0.0",
@@ -774,7 +774,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bevy_window 0.15.0",
  "bitflags 2.6.0",
- "derive_more",
+ "derive_more 1.0.0",
  "nonmax",
  "radsort",
  "serde",
@@ -877,13 +877,41 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bitflags 2.6.0",
  "concurrent-queue",
- "derive_more",
+ "derive_more 1.0.0",
  "disqualified",
  "fixedbitset 0.5.7",
  "nonmax",
  "petgraph",
  "serde",
  "smallvec",
+]
+
+[[package]]
+name = "bevy_ecs_ldtk"
+version = "0.10.0"
+source = "git+https://github.com/neocturne/bevy_ecs_ldtk?branch=bevy-0.15#a55b10c903c5ac38a6d666b7454817622d46ee39"
+dependencies = [
+ "bevy 0.15.0",
+ "bevy_ecs_ldtk_macros",
+ "bevy_ecs_tilemap 0.14.0 (git+https://github.com/alxgnon/bevy_ecs_tilemap.git)",
+ "derive-getters",
+ "derive_more 0.99.18",
+ "paste",
+ "path-clean",
+ "regex",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "bevy_ecs_ldtk_macros"
+version = "0.10.0"
+source = "git+https://github.com/neocturne/bevy_ecs_ldtk?branch=bevy-0.15#a55b10c903c5ac38a6d666b7454817622d46ee39"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -908,6 +936,25 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.90",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.14.0"
+source = "git+https://github.com/rparrett/bevy_ecs_tilemap?branch=bevy-0.15#86235d6f9f4f05cd4e3f6af9d3392b08a590a48f"
+dependencies = [
+ "bevy 0.15.0",
+ "bevy_internal 0.15.0",
+ "log",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.14.0"
+source = "git+https://github.com/alxgnon/bevy_ecs_tilemap.git#9029eeffd819371548322006a780be6009883f2f"
+dependencies = [
+ "bevy 0.15.0",
+ "log",
 ]
 
 [[package]]
@@ -970,26 +1017,34 @@ dependencies = [
 name = "bevy_game"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "avian2d",
  "bevy 0.15.0",
  "bevy_asset_loader",
  "bevy_color 0.15.1",
+ "bevy_ecs_ldtk",
+ "bevy_ecs_tilemap 0.14.0 (git+https://github.com/rparrett/bevy_ecs_tilemap?branch=bevy-0.15)",
  "bevy_egui",
  "bevy_kira_audio",
  "bevy_prototype_lyon",
  "bevy_simple_text_input",
  "bevy_time 0.15.0",
+ "bevy_two_entities",
  "bevy_ui",
  "bumpalo",
+ "default-args",
  "embed-resource",
  "generational-arena",
  "glam 0.29.2",
  "image",
  "itertools",
  "lazy_static",
+ "ldtk2",
  "libloading 0.8.6",
  "log",
  "rand",
+ "ron",
+ "serde",
  "webbrowser",
  "winit",
 ]
@@ -1005,7 +1060,7 @@ dependencies = [
  "bevy_input 0.15.0",
  "bevy_time 0.15.0",
  "bevy_utils 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "gilrs",
 ]
 
@@ -1069,7 +1124,7 @@ dependencies = [
  "bevy_tasks 0.15.0",
  "bevy_transform 0.15.0",
  "bevy_utils 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "gltf",
  "percent-encoding",
  "serde",
@@ -1129,7 +1184,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bitflags 2.6.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "futures-lite",
  "image",
  "ktx2",
@@ -1165,7 +1220,7 @@ dependencies = [
  "bevy_math 0.15.0",
  "bevy_reflect 0.15.0",
  "bevy_utils 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "smol_str",
 ]
 
@@ -1328,7 +1383,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ae26f952598e293acac783d947b21af1809673cbeba25d76b969a56f287160b"
 dependencies = [
  "bevy_reflect 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "glam 0.29.2",
  "itertools",
  "rand",
@@ -1354,7 +1409,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bitflags 2.6.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "hexasphere 15.0.0",
  "serde",
  "wgpu 23.0.1",
@@ -1426,7 +1481,7 @@ dependencies = [
  "bevy_window 0.15.0",
  "bitflags 2.6.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "fixedbitset 0.5.7",
  "nonmax",
  "radsort",
@@ -1510,7 +1565,7 @@ dependencies = [
  "bevy_ptr 0.15.0",
  "bevy_reflect_derive 0.15.0",
  "bevy_utils 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "disqualified",
  "downcast-rs",
  "erased-serde",
@@ -1622,7 +1677,7 @@ dependencies = [
  "bevy_window 0.15.0",
  "bytemuck",
  "codespan-reporting",
- "derive_more",
+ "derive_more 1.0.0",
  "downcast-rs",
  "encase 0.10.0",
  "futures-lite",
@@ -1680,7 +1735,7 @@ dependencies = [
  "bevy_render 0.15.0",
  "bevy_transform 0.15.0",
  "bevy_utils 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
  "serde",
  "uuid",
 ]
@@ -1716,7 +1771,7 @@ dependencies = [
  "bevy_window 0.15.0",
  "bitflags 2.6.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "fixedbitset 0.5.7",
  "guillotiere",
  "nonmax",
@@ -1797,7 +1852,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bevy_window 0.15.0",
  "cosmic-text",
- "derive_more",
+ "derive_more 1.0.0",
  "serde",
  "smallvec",
  "sys-locale",
@@ -1856,7 +1911,7 @@ dependencies = [
  "bevy_hierarchy 0.15.0",
  "bevy_math 0.15.0",
  "bevy_reflect 0.15.0",
- "derive_more",
+ "derive_more 1.0.0",
 ]
 
 [[package]]
@@ -1864,6 +1919,15 @@ name = "bevy_transform_interpolation"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1fcad6974fb74cab07425c4f3d3af78876966b4525c3aec5c0d56ae8511a946a"
+dependencies = [
+ "bevy 0.15.0",
+]
+
+[[package]]
+name = "bevy_two_entities"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b0b30e34d87bd33e31824da6ab78da27031a060bf211652e4aa12af4c8859ba"
 dependencies = [
  "bevy 0.15.0",
 ]
@@ -1895,7 +1959,7 @@ dependencies = [
  "bevy_utils 0.15.0",
  "bevy_window 0.15.0",
  "bytemuck",
- "derive_more",
+ "derive_more 1.0.0",
  "nonmax",
  "smallvec",
  "taffy",
@@ -2412,6 +2476,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "convert_case"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
+
+[[package]]
 name = "core-foundation"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2614,6 +2684,41 @@ name = "data-encoding"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8566979429cf69b49a5c740c60791108e86440e8be149bbea4fe54d2c32d6e2"
+
+[[package]]
+name = "default-args"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "13b278f5a88847c427cdc4c3408916fb2135f179444e095cd207294d4c28c5e9"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
+name = "derive-getters"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a2c35ab6e03642397cdda1dd58abbc05d418aef8e36297f336d5aba060fe8df"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
+name = "derive_more"
+version = "0.99.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f33878137e4dafd7fa914ad4e259e18a4e8e532b9617a2d0150262bf53abfce"
+dependencies = [
+ "convert_case",
+ "proc-macro2",
+ "quote",
+ "rustc_version",
+ "syn 2.0.90",
+]
 
 [[package]]
 name = "derive_more"
@@ -2913,9 +3018,9 @@ dependencies = [
 
 [[package]]
 name = "fastrand"
-version = "2.2.0"
+version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "486f806e73c5707928240ddc295403b1b93c96a02038563881c4a2fd84b81ac4"
+checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
 
 [[package]]
 name = "fdeflate"
@@ -3752,10 +3857,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 
 [[package]]
+name = "ldtk2"
+version = "0.8.0"
+source = "git+https://github.com/jpx40/ldtk2-rs#1c5c894f95a61d68694de97d8742212d558772b0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "libc"
-version = "0.2.167"
+version = "0.2.168"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09d6582e104315a817dff97f75133544b2e094ee22447d2acf4a74e189ba06fc"
+checksum = "5aaeb2981e0606ca11d79718f8bb01164f1d6ed75080182d3abf017e6d244b6d"
 
 [[package]]
 name = "libloading"
@@ -4665,6 +4780,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
+name = "path-clean"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "17359afc20d7ab31fdb42bb844c8b3bb1dabd7dcf7e68428492da7f16966fcef"
+
+[[package]]
 name = "path-slash"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5089,15 +5210,15 @@ dependencies = [
 
 [[package]]
 name = "rustix"
-version = "0.38.41"
+version = "0.38.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7f649912bc1495e167a6edee79151c84b1bad49748cb4f1f1167f459f6224f6"
+checksum = "f93dc38ecbab2eb790ff964bb77fa94faf256fd3e73285fd7ba0903b76bedb85"
 dependencies = [
  "bitflags 2.6.0",
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.52.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]

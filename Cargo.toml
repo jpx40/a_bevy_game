@@ -95,7 +95,16 @@ generational-arena = "=0.2.9"
 libloading = "0.8.6"
 lazy_static = "1.5.0"
 bevy_prototype_lyon = { git = "https://github.com/jpx40/bevy_prototype_lyon", version = "0.13.0" }
+ron = "0.8.1"
+serde = { version = "1.0.215", features = ["derive"] }
+anyhow = "1.0.94"
+ldtk2 = { git = "https://github.com/jpx40/ldtk2-rs", version = "0.8.0" }
+bevy_two_entities = "0.3.0"
 # avian2d = {git="https://github.com/Jondolf/avian"}
+bevy_ecs_tilemap ={git="https://github.com/rparrett/bevy_ecs_tilemap", branch = "bevy-0.15"}
+
+bevy_ecs_ldtk = {git="https://github.com/neocturne/bevy_ecs_ldtk", branch = "bevy-0.15"}
+default-args = "1.0.0"
 
 [build-dependencies]
 embed-resource = "1"

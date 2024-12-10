@@ -1,4 +1,14 @@
 #![allow(clippy::type_complexity)]
+#![allow(dead_code)]
+#![allow(unused)]
+#![allow(unsafe_code)]
+#![allow(unused_mut)]
+#![allow(unused_imports)]
+mod camera;
+mod game_over;
+use bevy_ecs_ldtk::prelude::*;
+use bevy_ecs_ldtk::LdtkPlugin;
+use bevy_ecs_ldtk::LevelSelection;
 mod actions;
 mod audio;
 mod binds;
@@ -8,6 +18,7 @@ mod menu;
 mod movement;
 mod plattforms;
 mod player;
+mod sprite_loader;
 mod state;
 mod ui;
 mod utils;
@@ -41,6 +52,7 @@ enum GameState {
     Playing,
     // Here the menu is drawn and waiting for player interaction
     Menu,
+    GameOver,
 }
 
 pub struct GamePlugin;
@@ -53,15 +65,26 @@ impl Plugin for GamePlugin {
                 MenuPlugin,
                 ActionsPlugin,
                 TextInputPlugin,
+                LdtkPlugin,
+                crate::sprite_loader::tileset::TileLoaderPlugin,
                 InternalAudioPlugin,
                 PhysicsPlugins::default().with_length_unit(20.0),
                 PlayerPlugin,
                 crate::state::StorePlugin,
                 crate::ui::UIPlugin,
-                CharacterControllerPlugin,
+                  crate::game_over::GameOverPlugin,
+   
+                  CharacterControllerPlugin,
                 crate::collectables::CollectablePlugin,
                 crate::plattforms::PlatformsPlugin,
             ))
+            .insert_resource(LdtkSettings {
+                level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
+                    load_level_neighbors: true,
+                },
+                set_clear_color: SetClearColor::FromLevelBackground,
+                ..Default::default()
+            })
             .insert_resource(Gravity(Vector::NEG_Y * 1000.0));
 
         #[cfg(debug_assertions)]

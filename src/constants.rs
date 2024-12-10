@@ -10,8 +10,8 @@ const SPRITE_TILE_HEIGHT: f32 = 256.0;
 const SPRITE_IDX_STAND: usize = 16;
 const SPRITE_IDX_WALKING: &[usize] = &[29, 22];
 const CYCLE_DELAY: Duration = Duration::from_millis(70);
-const COLOR_BACKGROUND: Color = Color::rgb(0.29, 0.31, 0.41);
-const COLOR_FLOOR: Color = Color::rgb(0.45, 0.55, 0.66);
+const COLOR_BACKGROUND: Color = Color::srgb(0.29, 0.31, 0.41);
+const COLOR_FLOOR: Color = Color::srgb(0.45, 0.55, 0.66);
 const FLOOR_THICKNESS: f32 = 10.0;
 
 const WINDOW_HEIGHT: f32 = 720.0;

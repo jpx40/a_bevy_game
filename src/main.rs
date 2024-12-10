@@ -1,3 +1,5 @@
+///https://trouv.github.io/bevy_ecs_ldtk/latest/index.html
+
 // disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
@@ -15,6 +17,7 @@ fn main() {
         .insert_resource(ClearColor(Color::linear_rgb(0.4, 0.4, 0.4)))
         .add_plugins(
             DefaultPlugins
+                .set(ImagePlugin::default_nearest()) // prevents blurry sprites
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Bevy game".to_string(), // ToDo
