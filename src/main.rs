@@ -1,5 +1,3 @@
-///https://trouv.github.io/bevy_ecs_ldtk/latest/index.html
-
 // disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
@@ -11,6 +9,7 @@ use bevy::DefaultPlugins;
 use bevy_game::GamePlugin; // ToDo: Replace bevy_game with your new crate name.
 use std::io::Cursor;
 use winit::window::Icon;
+///https://trouv.github.io/bevy_ecs_ldtk/latest/index.html
 
 fn main() {
     App::new()
