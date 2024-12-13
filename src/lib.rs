@@ -1,10 +1,14 @@
 #![allow(clippy::type_complexity)]
+#![feature(random)]
 #![allow(dead_code)]
 #![allow(unused)]
 #![allow(unsafe_code)]
 #![allow(unused_mut)]
 #![allow(unused_imports)]
 mod camera;
+mod draw_vector_graphics;
+mod draw_with_lyon;
+mod effect;
 mod game_over;
 use bevy_ecs_ldtk::prelude::*;
 use bevy_ecs_ldtk::LdtkPlugin;
@@ -60,6 +64,7 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.init_state::<GameState>()
+            // .add_plugins(crate::draw_with_lyon::DrawPlugin)
             .add_plugins((
                 LoadingPlugin,
                 MenuPlugin,
@@ -72,12 +77,12 @@ impl Plugin for GamePlugin {
                 PlayerPlugin,
                 crate::state::StorePlugin,
                 crate::ui::UIPlugin,
-                  crate::game_over::GameOverPlugin,
-   
-                  CharacterControllerPlugin,
+                crate::game_over::GameOverPlugin,
+                CharacterControllerPlugin,
                 crate::collectables::CollectablePlugin,
                 crate::plattforms::PlatformsPlugin,
             ))
+            .add_plugins(crate::draw_vector_graphics::VectorPlugin)
             .insert_resource(LdtkSettings {
                 level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
                     load_level_neighbors: true,

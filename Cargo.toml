@@ -105,6 +105,17 @@ bevy_ecs_tilemap ={git="https://github.com/rparrett/bevy_ecs_tilemap", branch = 
 
 bevy_ecs_ldtk = {git="https://github.com/neocturne/bevy_ecs_ldtk", branch = "bevy-0.15"}
 default-args = "1.0.0"
+bevy_app = "0.15.0"
+bevy_core = "0.15.0"
+bevy_input = "0.15.0"
+bevy_hanabi = "0.14.0"
+numtraits = "0.0.1"
+lyon = "1.0.1"
+lyon_algorithms = "1.0.5"
+bitflags = "2.6.0"
+enontekio = "0.4.0"
+ndarray = "0.16.1"
+bevy_vector_shapes = { git = "https://github.com/james-j-obrien/bevy_vector_shapes", version = "0.9.2" }
 
 [build-dependencies]
 embed-resource = "1"

@@ -5,7 +5,7 @@ use crate::sprite_loader::PlatformFile;
 use crate::state::Store;
 use crate::utils::{vec2, vec3};
 use crate::GameState;
-
+pub mod deteactable;
 use avian2d::{math::*, prelude::*};
 use bevy::prelude::*;
 use bevy::render::{render_asset::RenderAssetUsages, render_resource::PrimitiveTopology};

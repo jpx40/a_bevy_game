@@ -1,5 +1,6 @@
 use crate::actions::Actions;
 use crate::camera::camera_fit_inside_current_level;
+use crate::effect::{apply_effect, move_particle};
 use crate::loading::TextureAssets;
 use crate::movement::*;
 use crate::plattforms::{self, Plattform};
@@ -17,7 +18,9 @@ pub struct Player;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Playing), spawn_player)
-            .add_systems(Update, camera_follow.run_if(in_state(GameState::Playing)));
+            .add_systems(Update, camera_follow.run_if(in_state(GameState::Playing)))
+            .add_systems(Update, apply_effect)
+            .add_systems(Update, move_particle);
 
         // .add_systems(Update, camera_fit_inside_current_level.run_if(in_state(GameState::Playing)));
     }

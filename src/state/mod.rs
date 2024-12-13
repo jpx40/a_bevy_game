@@ -7,7 +7,7 @@ pub struct StorePlugin;
 pub struct Store {
     pub collected: u32,
     pub deaths: u32,
-    pub health: u32,
+    pub health: i32,
 }
 impl Default for Store {
     fn default() -> Self {
@@ -21,7 +21,8 @@ impl Default for Store {
 
 impl Plugin for StorePlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(Store::default()).add_systems(Update, check_health);
+        app.insert_resource(Store::default())
+            .add_systems(Update, check_health);
     }
 }
 
