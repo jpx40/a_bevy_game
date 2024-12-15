@@ -15,6 +15,7 @@ pub fn spawn_platform(commands: &mut Commands, pos: Vec3, size: Vec2) {
         Collider::rectangle(10., 100.),
         Transform::from_xyz({ pos.x - size.x / 2. }, pos.y, pos.z),
         Stopper,
+        CollidingEntities::default(),
     ));
     commands.spawn((
         Sprite::from_color(WHITE, vec2(10., 100.)),
@@ -23,6 +24,7 @@ pub fn spawn_platform(commands: &mut Commands, pos: Vec3, size: Vec2) {
         Collider::rectangle(10., 100.),
         Transform::from_xyz({ pos.x + size.x / 2. }, pos.y, pos.z),
         Stopper,
+        CollidingEntities::default(),
     ));
     commands.spawn(super::new_plattform(pos, size));
 }
