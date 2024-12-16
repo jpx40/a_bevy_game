@@ -11,6 +11,7 @@ mod draw_with_lyon;
 mod effect;
 mod game_over;
 mod mob;
+mod modifier;
 use bevy_ecs_ldtk::prelude::*;
 use bevy_ecs_ldtk::LdtkPlugin;
 use bevy_ecs_ldtk::LevelSelection;

@@ -1,16 +1,17 @@
 use std::default;
 
-use crate::{plattforms::deteactable::Stopper, GameState};
+use crate::{modifier::Speed, plattforms::deteactable::Stopper, GameState};
 use avian2d::{math::*, prelude::*};
 use bevy::prelude::*;
 use bevy_color::palettes::css::{ORANGE, WHITE};
-#[derive(Component)]
+#[derive(Component, PartialEq, Eq)]
 pub enum Move {
     Left,
     Right,
     Up,
     Down,
 }
+
 impl Default for Move {
     fn default() -> Self {
         Move::Left
@@ -26,14 +27,21 @@ impl Plugin for MobPlugin {
 #[derive(Component)]
 pub struct Mob;
 
-fn setup(mut commands: Commands) {
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) {
     commands.spawn((
+        Speed(1.),
         RigidBody::Kinematic,
         Collider::capsule(12.5, 20.0),
         Mesh2d(meshes.add(Capsule2d::new(12.5, 20.0))),
-              MeshMaterial2d(materials.add(Color::srgb(0.2, 0.7, 0.9))),
-              Transform::from_xyz(0.0, -100.0, 0.0),
-        Mob, Move::default()));
+        MeshMaterial2d(materials.add(Color::srgb(0.2, 0.7, 0.9))),
+        Transform::from_xyz(0.0, -100.0, 0.0),
+        Mob,
+        Move::default(),
+    ));
 }
 
 pub fn detect_collision(
@@ -43,7 +51,7 @@ pub fn detect_collision(
     for (mut m, e) in query.iter_mut() {
         for mut c in collision.iter_mut() {
             c.retain(|e2| {
-                if *e == *e2 {
+                if e == *e2 {
                     if *m == Move::Right {
                         *m = Move::Left;
                     } else if *m == Move::Left {
@@ -57,12 +65,12 @@ pub fn detect_collision(
         }
     }
 }
-pub fn move_mob(mut query: Query<(&mut Transform, &Move), With<Mob>>) {
-    query.iter_mut().for_each(|(mut t, m)| {
+pub fn move_mob(mut query: Query<(&mut Transform, &Speed, &Move), With<Mob>>) {
+    query.iter_mut().for_each(|(mut t, s, m)| {
         if *m == Move::Right {
-            *t.translation.x += 1;
+            t.translation.x += s.0;
         } else if *m == Move::Left {
-            *t.translation.x -= 1;
+            t.translation.x -= s.0;
         }
     });
 }
