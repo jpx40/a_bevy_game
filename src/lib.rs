@@ -5,6 +5,7 @@
 #![allow(unsafe_code)]
 #![allow(unused_mut)]
 #![allow(unused_imports)]
+mod bullet;
 mod camera;
 mod draw_vector_graphics;
 mod draw_with_lyon;
