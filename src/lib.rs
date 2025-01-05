@@ -5,24 +5,20 @@
 #![allow(unsafe_code)]
 #![allow(unused_mut)]
 #![allow(unused_imports)]
-mod bullet;
-mod camera;
-mod draw_vector_graphics;
-mod draw_with_lyon;
-mod effect;
-mod game_over;
-mod mob;
-mod modifier;
-use bevy_ecs_ldtk::prelude::*;
-use bevy_ecs_ldtk::LdtkPlugin;
-use bevy_ecs_ldtk::LevelSelection;
 mod actions;
 mod audio;
 mod binds;
+mod builder;
 mod constants;
+mod effect;
+mod game_over;
 mod loading;
+mod manager;
 mod menu;
+mod mob;
+mod modifier;
 mod movement;
+mod network;
 mod plattforms;
 mod player;
 mod sprite_loader;
@@ -41,7 +37,7 @@ mod collectables;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
-use bevy_egui::{egui, EguiContexts, EguiPlugin, EguiSettings};
+
 use bevy_simple_text_input::{
     TextInput, TextInputPlugin, TextInputSubmitEvent, TextInputSystem, TextInputTextColor,
     TextInputTextFont,
@@ -60,6 +56,7 @@ enum GameState {
     // Here the menu is drawn and waiting for player interaction
     Menu,
     GameOver,
+    Builder,
 }
 
 pub struct GamePlugin;
@@ -73,8 +70,6 @@ impl Plugin for GamePlugin {
                 MenuPlugin,
                 ActionsPlugin,
                 TextInputPlugin,
-                LdtkPlugin,
-                crate::sprite_loader::tileset::TileLoaderPlugin,
                 InternalAudioPlugin,
                 PhysicsPlugins::default().with_length_unit(20.0),
                 PlayerPlugin,
@@ -85,19 +80,19 @@ impl Plugin for GamePlugin {
                 crate::collectables::CollectablePlugin,
                 crate::plattforms::PlatformsPlugin,
             ))
-            .add_plugins(crate::draw_vector_graphics::VectorPlugin)
-            .insert_resource(LdtkSettings {
-                level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
-                    load_level_neighbors: true,
-                },
-                set_clear_color: SetClearColor::FromLevelBackground,
-                ..Default::default()
-            })
+            .add_plugins((crate::network::NetworkPlugin, crate::builder::BuilderPlugin))
+            // .insert_resource(LdtkSettings {
+            //     level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
+            //         load_level_neighbors: true,
+            //     },
+            //     set_clear_color: SetClearColor::FromLevelBackground,
+            //     ..Default::default()
+            // })
             .insert_resource(Gravity(Vector::NEG_Y * 1000.0));
 
         #[cfg(debug_assertions)]
         {
-            app.add_plugins((FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin::default()));
+            app.add_plugins(LogDiagnosticsPlugin::default());
         }
     }
 }

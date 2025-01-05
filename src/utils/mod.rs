@@ -4,6 +4,7 @@ use bevy::{
     ecs::schedule::ScheduleLabel,
     prelude::{Bundle, Commands, EntityCommands, IntoSystemConfigs},
 };
+pub mod port;
 use glam::f32::{Vec2, Vec3};
 
 pub fn vec2(x: f32, y: f32) -> Vec2 {
@@ -152,40 +153,6 @@ pub fn get_log_filters(example_name: &str) -> String {
         "wgpu_hal::vulkan::instance=warn",
     ]
     .join(",")
-}
-
-/// Create a test app for an example.
-pub fn make_test_app(example_name: &str) -> App {
-    make_test_app_with_settings(example_name, WgpuSettings::default())
-}
-
-/// Create a test app for an example, with explicit WGPU settings.
-pub fn make_test_app_with_settings(example_name: &str, wgpu_settings: WgpuSettings) -> App {
-    let mut app = App::default();
-    app.insert_resource(ClearColor(Color::BLACK))
-        .add_plugins(
-            DefaultPlugins
-                .set(LogPlugin {
-                    level: bevy::log::Level::INFO,
-                    filter: get_log_filters(example_name),
-                    ..default()
-                })
-                .set(RenderPlugin {
-                    render_creation: wgpu_settings.into(),
-                    synchronous_pipeline_compilation: false,
-                })
-                .set(WindowPlugin {
-                    primary_window: Some(Window {
-                        title: format!("🎆 Hanabi — {}", example_name),
-                        ..default()
-                    }),
-                    ..default()
-                }),
-        )
-        .add_plugins(bevy_hanabi::HanabiPlugin)
-        .add_systems(Update, close_on_esc);
-
-    app
 }
 
 /// Error struct wrapping an app error code.

@@ -7,7 +7,6 @@ use bevy::{
     sprite::Anchor,
     text::{FontSmoothing, LineBreak, TextBounds},
 };
-use bevy_egui::egui::debug_text::print;
 
 use crate::state::Store;
 

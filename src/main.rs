@@ -35,7 +35,6 @@ fn main() {
                     ..default()
                 }),
         )
-        .add_plugins(bevy_prototype_lyon::plugin::ShapePlugin)
         .add_plugins(GamePlugin)
         .add_systems(Startup, set_window_icon)
         .run();

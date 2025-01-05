@@ -4,7 +4,6 @@ use serde::Serialize;
 use std::fs::File;
 use std::io::read_to_string;
 use std::io::Read;
-pub mod tileset;
 #[derive(Serialize, Deserialize)]
 pub struct PlatformFile {
     pub platforms: Vec<PlatformSprite>,
