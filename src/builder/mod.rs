@@ -12,6 +12,7 @@ use bevy::{
     winit::WinitSettings,
 };
 use bevy::{color::palettes::css::*, prelude::*};
+use bevy_color::palettes::tailwind::ORANGE_100;
 use glam::vec2;
 use ops::powf;
 
@@ -19,18 +20,18 @@ const FONT_SIZE: f32 = 20.;
 const LINE_HEIGHT: f32 = 21.;
 pub struct BuilderPlugin;
 
+#[derive(Resource)]
+pub struct SelectedColor(pub Color);
 impl Plugin for BuilderPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(DrawState { list: Vec::new() })
+            .insert_resource(SelectedColor(ORANGE.into()))
             .add_systems(OnEnter(GameState::Builder), spawn_layout)
             .add_systems(
                 Update,
                 update_scroll_position.run_if(in_state(GameState::Builder)),
             )
-            .add_systems(
-                         Update,
-                         color_button.run_if(in_state(GameState::Builder)),
-                     )
+            .add_systems(Update, color_button.run_if(in_state(GameState::Builder)))
             .add_systems(Update, draw_rect.run_if(in_state(GameState::Builder)));
     }
 }
@@ -86,15 +87,13 @@ fn spawn_layout(mut commands: Commands, asset_server: Res<AssetServer>) {
         .with_children(|builder| {
             // Header
             builder
-                .spawn(
-                    Node {
-                        display: Display::Grid,
-                        // Make this node span two grid columns so that it takes up the entire top tow
-                        grid_column: GridPlacement::span(2),
-                        padding: UiRect::all(Val::Px(6.0)),
-                        ..default()
-                    },
-                )
+                .spawn(Node {
+                    display: Display::Grid,
+                    // Make this node span two grid columns so that it takes up the entire top tow
+                    grid_column: GridPlacement::span(2),
+                    padding: UiRect::all(Val::Px(6.0)),
+                    ..default()
+                })
                 .with_children(|builder| {
                     spawn_nested_text_bundle(builder, font.clone(), "Bevy CSS Grid Layout Example");
                 });
@@ -107,17 +106,17 @@ fn spawn_layout(mut commands: Commands, asset_server: Res<AssetServer>) {
                         height: Val::Percent(100.0),
                         // Make the grid have a 1:1 aspect ratio meaning it will scale as an exact square
                         // As the height is set explicitly, this means the width will adjust to match the height
-                        aspect_ratio: Some(1.0),
+                        aspect_ratio: Some(0.25),
                         // Use grid layout for this node
                         display: Display::Grid,
                         // Add 24px of padding around the grid
                         padding: UiRect::all(Val::Px(14.0)),
                         // Set the grid to have 4 columns all with sizes minmax(0, 1fr)
                         // This creates 4 exactly evenly sized columns
-                        grid_template_columns: RepeatedGridTrack::flex(3, 1.0),
+                        grid_template_columns: RepeatedGridTrack::flex(3, 0.25),
                         // Set the grid to have 4 rows all with sizes minmax(0, 1fr)
                         // This creates 4 exactly evenly sized rows
-                        grid_template_rows: RepeatedGridTrack::flex(3, 1.0),
+                        // grid_template_rows: RepeatedGridTrack::flex(3, 0.25),
                         // Set a 12px gap/gutter between rows and columns
                         row_gap: Val::Px(6.0),
                         column_gap: Val::Px(6.0),
@@ -149,8 +148,6 @@ fn spawn_layout(mut commands: Commands, asset_server: Res<AssetServer>) {
                     item_rect(builder, SALMON);
                 });
 
-    
-
             // Footer / status bar
             builder.spawn((
                 Node {
@@ -163,21 +160,21 @@ fn spawn_layout(mut commands: Commands, asset_server: Res<AssetServer>) {
 
             // Modal (absolutely positioned on top of content - currently hidden: to view it, change its visibility)
             builder.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    margin: UiRect {
-                        top: Val::Px(100.),
-                        bottom: Val::Auto,
-                        left: Val::Auto,
-                        right: Val::Auto,
-                    },
-                    width: Val::Percent(60.),
-                    height: Val::Px(30.),
-                    max_width: Val::Px(60.),
-                    ..default()
-                },
-                Visibility::Hidden,
-                BackgroundColor(Color::WHITE.with_alpha(0.8)),
+                // Node {
+                //     position_type: PositionType::Absolute,
+                //     margin: UiRect {
+                //         top: Val::Px(100.),
+                //         bottom: Val::Auto,
+                //         left: Val::Auto,
+                //         right: Val::Auto,
+                //     },
+                //     width: Val::Percent(60.),
+                //     height: Val::Px(30.),
+                //     max_width: Val::Px(60.),
+                //     ..default()
+                // },
+                // Visibility::Hidden,
+                // BackgroundColor(Color::WHITE.with_alpha(0.8)),
             ));
         });
 }
@@ -207,34 +204,26 @@ fn item_rect(builder: &mut ChildBuilder, color: Srgba) {
         });
 }
 
+fn color_button(
+    mut sel_color: ResMut<SelectedColor>,
+    mut interaction_query: Query<
+        (&Interaction, &ColorButton),
+        (Changed<Interaction>, With<Button>, With<ColorButton>),
+    >,
+) {
+    for (interaction, color) in &mut interaction_query {
+        match *interaction {
+            Interaction::Pressed => {
+                sel_color.0 = color.0.clone();
+                let color = color.0.to_srgba().to_hex();
 
-fn color_button( mut interaction_query: Query<
-       (
-           &Interaction,
-           
-           &ColorButton
-           ),
-       (Changed<Interaction>, With<Button>, With<ColorButton>),>) {
-           
-           
-           
-           for (interaction,color) in &mut interaction_query {
-                  match *interaction {
-                      Interaction::Pressed => {
-                         let color = color.0.to_srgba().to_hex();
-                         println!("{color}");
-                      }
-                      Interaction::Hovered => {
-                         
-                      }
-                      Interaction::None => {
-                     
-                      }
-                  }
-              }
-          
-           
-       }
+                println!("{color}");
+            }
+            Interaction::Hovered => {}
+            Interaction::None => {}
+        }
+    }
+}
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let button_colors = ButtonColors::default();
@@ -274,7 +263,6 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                     TextColor(Color::linear_rgb(0.9, 0.9, 0.9)),
                 ));
         });
-
 }
 
 #[derive(Clone, Copy)]
@@ -321,7 +309,10 @@ pub fn new_plattform(pos: Vec3, size: Vec2) -> (Sprite, Transform, RigidBody, Co
         Plattform,
     )
 }
-
+#[derive(Component)]
+struct StartPos {
+    pos: Vec3,
+}
 #[derive(Component)]
 pub struct LenText;
 #[derive(Component)]
@@ -340,13 +331,14 @@ pub struct PlattformID(pub u16);
 
 fn draw_rect(
     mut state: ResMut<DrawState>,
+    color: Res<SelectedColor>,
     mut commands: Commands,
     q_camera: Query<(&Camera, &GlobalTransform), With<MainCamera>>,
 
     q_window: Query<&Window, With<PrimaryWindow>>,
 
     mut current: Query<
-        (&mut Sprite, Entity, &Transform),
+        (&mut Sprite, Entity, &mut Transform, &StartPos),
         (With<Plattform>, With<PlattformID>, With<InProgress>),
     >,
     button: Res<ButtonInput<MouseButton>>,
@@ -366,11 +358,15 @@ fn draw_rect(
                     let id = (state.len() + 1) as u16;
                     el.id = id;
                     el.translation = vec3(position.x, position.y, 0.);
+                    el.color = color.0.clone();
                     commands.spawn(((
                         Sprite {
                             color: el.color,
                             custom_size: Some(vec2(el.size.x, el.size.y)),
                             ..default()
+                        },
+                        StartPos {
+                            pos: vec3(position.x, position.y, 0.),
                         },
                         Transform::from_xyz(position.x, position.y, 0.),
                         RigidBody::Static,
@@ -380,9 +376,17 @@ fn draw_rect(
                     ),));
                     state.list.push(el);
                 } else {
-                    for (mut sprite, _, t) in current.iter_mut() {
+                    for (mut sprite, _, mut t, start) in current.iter_mut() {
+                        let len = (powf((start.pos.x - position.x), 2.)
+                            + powf((start.pos.y - position.y), 2.))
+                        .sqrt();
+
+                        let tx = start.pos.x + (len / 2.);
+                        let ty = start.pos.y - (len / 2.);
+                        t.translation.x = tx;
+                                            t.translation.y = ty;
                         let width = {
-                            let mut l = position.x - t.translation.x;
+                            let mut l = position.x - start.pos.x;
 
                             if l < 0. {
                                 l = l * -1.;
@@ -393,7 +397,7 @@ fn draw_rect(
                         };
 
                         let height = {
-                            let mut l = position.y - t.translation.y;
+                            let mut l = position.y - start.pos.y;
 
                             if l < 0. {
                                 l = l * -1.;
@@ -402,7 +406,7 @@ fn draw_rect(
                                 l
                             }
                         };
-
+                    
                         let l = state.len() - 1;
                         state.list[l].size = vec3(width, height, 0.);
                         sprite.custom_size = Some(vec2(width, height))
@@ -422,7 +426,7 @@ fn draw_rect(
             }
         }
     } else {
-        for (_, e, _) in current.iter() {
+        for (_, e, _, _) in current.iter() {
             commands.entity(e).remove::<InProgress>();
         }
     }

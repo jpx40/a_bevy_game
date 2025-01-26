@@ -80,6 +80,7 @@ impl Plugin for GamePlugin {
                 crate::collectables::CollectablePlugin,
                 crate::plattforms::PlatformsPlugin,
             ))
+            .add_plugins(bevy_egui::EguiPlugin)
             .add_plugins((crate::network::NetworkPlugin, crate::builder::BuilderPlugin))
             // .insert_resource(LdtkSettings {
             //     level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
